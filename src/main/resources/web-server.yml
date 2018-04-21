@@ -3,7 +3,7 @@ spring:
   application:
     name: web-service  # Identify this application
   freemarker:
-    enabled: false     # Ignore Eureka dashboard FreeMarker templates 
+    enabled: false     # Ignore Eureka dashboard FreeMarker templates
   thymeleaf:
     cache: false       # Allow Thymeleaf templates to be reloaded at runtime
     prefix: classpath:/web-server/templates/    # Trailing / mandatory

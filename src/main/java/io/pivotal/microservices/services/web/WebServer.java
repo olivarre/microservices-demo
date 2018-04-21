@@ -29,7 +29,7 @@ public class WebServer {
 	 * Run the application using Spring Boot and an embedded servlet engine.
 	 * 
 	 * @param args
-	 *            Program arguments - ignored. 
+	 *            Program arguments - ignored.
 	 */
 	public static void main(String[] args) {
 		// Tell server to look for web-server.properties or web-server.yml

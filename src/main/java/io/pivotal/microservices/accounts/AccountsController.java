@@ -1,6 +1,6 @@
 package io.pivotal.microservices.accounts;
 
-import java.util.List; 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,10 @@ import io.pivotal.microservices.exceptions.AccountNotFoundException;
 
 /**
  * A RESTFul controller for accessing account information.
+ * 
+ * REST URLs:	
+ * 		http://localhost:3333/accounts/123456789
+ * 		http://localhost:3333/accounts/owner/lee
  * 
  * @author Paul Chapman
  */
