@@ -39,7 +39,7 @@ public class WebAccountsController {
 	public void initBinder(WebDataBinder binder) {
 		binder.setAllowedFields("accountNumber", "searchText");
 	}
-
+ 
 	@RequestMapping("/accounts")
 	public String goHome() {
 		return "index";

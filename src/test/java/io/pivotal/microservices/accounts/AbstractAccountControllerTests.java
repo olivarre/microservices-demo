@@ -13,7 +13,7 @@ import io.pivotal.microservices.exceptions.AccountNotFoundException;
 
 // The following are equivalent, we only need to use one.
 
-// 1. Read test properties from a file - neater when there are multiple properties
+// 1. Read test properties from a file - neater when there are multiple properties 
 @TestPropertySource(locations = "classpath:account-controller-tests.properties")
 
 // 2. Define test properties directly, acceptable here since we only have one.

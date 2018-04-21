@@ -34,7 +34,7 @@ public class WebAccountsService {
 	public WebAccountsService(String serviceUrl) {
 		this.serviceUrl = serviceUrl.startsWith("http") ? serviceUrl
 				: "http://" + serviceUrl;
-	}
+	} 
 
 	/**
 	 * The RestTemplate works because it uses a custom request-factory that uses

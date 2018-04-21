@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * Spring Integration/System test - by using @SpringApplicationConfiguration
- * instead of @ContextConfiguration, it picks up the same configuration that
+ * instead of @ContextConfiguration, it picks up the same configuration that 
  * Spring Boot would use.
  * <p>
  * Note 1: We have disabled the discovery client since it is not required for

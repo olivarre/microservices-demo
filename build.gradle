@@ -5,7 +5,7 @@ apply plugin: 'maven'
 apply plugin: 'spring-boot'
 
 
-buildscript {
+buildscript { 
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:" + springBootVersion)
     }

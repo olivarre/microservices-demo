@@ -15,7 +15,7 @@ public class Account {
 	protected Long id;
 	protected String number;
 	protected String owner;
-	protected BigDecimal balance;
+	protected BigDecimal balance; 
 
 	/**
 	 * Default constructor for JPA only.

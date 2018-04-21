@@ -23,7 +23,7 @@ public class SearchCriteria {
 	public void setSearchText(String searchText) {
 		this.searchText = searchText;
 	}
-
+ 
 	public boolean isValid() {
 		if (StringUtils.hasText(accountNumber))
 			return !(StringUtils.hasText(searchText));
