@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+<!-- reo - added html to display products -->
+
+<body>
+	<h1>Product Details</h1>
+
+	<dl class="dl-horizontal">
+		<dt>Number</dt>
+		<dd th:text="${product.number}">number</dd>
+		<dt>Owner</dt>
+		<dd th:text="${product.manufacturer}">manufacturer</dd>
+		<dt>Balance</dt>
+		<dd th:text="${product.balance}">balance</dd>
+	</dl>
+
+	<div style="height: 2cm">&nbsp;</div>
+
+	<div style="text-align: right">
+		Options: <a th:href="@{/}">Home</a> | <a th:href="@{/products/search}">Product Search</a>
+	</div>
+
+	<div th:replace="footer :: copy"></div>
+</body>
+</html>
