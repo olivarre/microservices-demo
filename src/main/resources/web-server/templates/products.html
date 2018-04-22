@@ -13,13 +13,14 @@
 
 	<div th:if="${products}">
 		<p>
-			Products whose manufacturer contains ' <span th:text="${search}">text</span>' are:
+			Products whose name contains ' <span th:text="${search}">text</span>' are:
 		</p>
 
 		<table class="table table-striped">
 			<thead>
 				<tr>
 					<th>Product Number</th>
+					<th>Name</th>
 					<th>Manufacturer</th>
 					<th>Price</th>
 				</tr>
@@ -30,18 +31,24 @@
 					<td><a href="product.html"
 						th:href="@{|/products/${product.number}|}"
 						th:text="|${product.number}|">11111111</a></td>
+					<td th:text="${product.name}">Product Name</td>
 					<td th:text="${product.manufacturer}">Manufacturer</td>
 					<td th:text="${product.price}">0</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-
+	
 	<div style="text-align: right">
 		Options: <a th:href="@{/}">Home</a> | <a
 			th:href="@{/products/search}">Product Search</a>
 	</div>
 
 	<div th:replace="footer :: copy"></div>
+
+	<div style="text-align: center">
+		This page implemented by Roberto
+	</div>
+	
 </body>
 </html>

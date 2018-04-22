@@ -61,21 +61,21 @@ public class ProductsController {
 
 	/**
 	 * Fetch products with the specified name. A partial case-insensitive match
-	 * is supported. So <code>http://.../products/owner/a</code> will find any
+	 * is supported. So <code>http://.../products/manufacturer/a</code> will find any
 	 * products with upper or lower case 'a' in their name.
 	 * 
 	 * @param partialName
 	 * @return A non-null, non-empty set of products.
 	 * @throws ProductNotFoundException		If there are no matches at all.
 	 */
-	@RequestMapping("/products/owner/{name}")
-	public List<Product> byOwner(@PathVariable("name") String partialName) {
-		logger.info("products-service byOwner() invoked: "
+	@RequestMapping("/products/byname/{name}")
+	public List<Product> byName(@PathVariable("name") String partialName) {
+		logger.info("products-service byName() invoked: "
 				+ productRepository.getClass().getName() + " for "
 				+ partialName);
 
-		List<Product> products = productRepository.findByManufacturerContainingIgnoreCase(partialName);
-		logger.info("products-service byOwner() found: " + products);
+		List<Product> products = productRepository.findByNameContainingIgnoreCase(partialName);
+		logger.info("products-service byName() found: " + products);
 
 		if (products == null || products.size() == 0)
 			throw new ProductNotFoundException(partialName);
@@ -83,4 +83,35 @@ public class ProductsController {
 			return products;
 		}
 	}
+
+// 	THE FOLLOWING IS BROKEN:
+	
+	/**
+	 * Fetch products with the specified name. A partial case-insensitive match
+	 * is supported. So <code>http://.../products/search/text/a</code> will find any
+	 * products with upper or lower case 'a' in their name.
+	 * 
+	 * @param searchText
+	 * @return A non-null, non-empty set of products.
+	 * @throws ProductNotFoundException		If there are no matches at all.
+	 */
+	@RequestMapping("/products/search/text/{searchText}")
+	public List<Product> bySearchText(@PathVariable("searchText") String searchText) {
+		logger.info("products-service bySearchText() invoked: "
+				+ productRepository.getClass().getName() + " for "
+				+ searchText);
+
+		List<Product> products = null; 
+		
+		// List<Product> products = productRepository.findBySearchTextIgnoreCase(searchText);
+		// TODO 	REO - IMPLEMENT KEYWORD SEARCH ACROSS ENTIRE PRODCUT DESCRIPTION
+		
+		logger.info("products-service bySearchText() found: " + products);
+
+		if (products == null || products.size() == 0)
+			throw new ProductNotFoundException(searchText);
+		else {
+			return products;
+		}
+	}	
 }

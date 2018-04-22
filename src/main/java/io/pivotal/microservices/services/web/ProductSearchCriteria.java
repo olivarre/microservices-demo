@@ -3,17 +3,17 @@ package io.pivotal.microservices.services.web;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
-public class SearchCriteria {
-	private String accountNumber;
+public class ProductSearchCriteria {
+	private String productNumber;
 
 	private String searchText;
 
-	public String getAccountNumber() {
-		return accountNumber;
+	public String getProductNumber() {
+		return productNumber;
 	}
 
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
+	public void setProductNumber(String productNumber) {
+		this.productNumber = productNumber;
 	}
 
 	public String getSearchText() {
@@ -25,35 +25,35 @@ public class SearchCriteria {
 	}
 
 	public boolean isValid() {
-		if (StringUtils.hasText(accountNumber))
+		if (StringUtils.hasText(productNumber))
 			return !(StringUtils.hasText(searchText));
 		else
 			return (StringUtils.hasText(searchText));
 	}
 
 	public boolean validate(Errors errors) {
-		if (StringUtils.hasText(accountNumber)) {
-			if (accountNumber.length() != 9)
-				errors.rejectValue("accountNumber", "badFormat",
-						"Account number should be 9 digits");
+		if (StringUtils.hasText(productNumber)) {
+			if (productNumber.length() != 9)
+				errors.rejectValue("productNumber", "badFormat",
+						"Product number should be 9 digits");
 			else {
 				try {
-					Integer.parseInt(accountNumber);
+					Integer.parseInt(productNumber);
 				} catch (NumberFormatException e) {
-					errors.rejectValue("accountNumber", "badFormat",
-							"Account number should be 9 digits");
+					errors.rejectValue("productNumber", "badFormat",
+							"Product number should be 9 digits");
 				}
 			}
 
 			if (StringUtils.hasText(searchText)) {
 				errors.rejectValue("searchText", "nonEmpty",
-						"Cannot specify account number and search text");
+						"Cannot specify product number and search text");
 			}
 		} else if (StringUtils.hasText(searchText)) {
-			; // Nothing to do
+			; // reo - searchtext appears fine - just validate it and return -- Nothing to do
 		} else {
-			errors.rejectValue("accountNumber", "nonEmpty",
-					"Must specify either an account number or search text");
+			errors.rejectValue("productNumber", "nonEmpty",
+					"Must specify either an product number or search text");
 
 		}
 
@@ -63,7 +63,7 @@ public class SearchCriteria {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return (StringUtils.hasText(accountNumber) ? "number: " + accountNumber
+		return (StringUtils.hasText(productNumber) ? "number: " + productNumber
 				: "")
 				+ (StringUtils.hasText(searchText) ? " text: " + searchText
 						: "");

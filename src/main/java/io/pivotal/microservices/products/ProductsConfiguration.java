@@ -45,7 +45,8 @@ public class ProductsConfiguration {
 		// Create an in-memory H2 relational database containing some demo products.
 		DataSource dataSource = (new EmbeddedDatabaseBuilder())
 				.addScript("classpath:testdb/product-schema.sql")
-				.addScript("classpath:testdb/product-data.sql").build();
+				.addScript("classpath:testdb/product-data.sql")
+				.build();
 
 		logger.info("dataSource = " + dataSource);
 
@@ -54,16 +55,24 @@ public class ProductsConfiguration {
 		List<Map<String, Object>> products = jdbcTemplate.queryForList("SELECT number FROM T_PRODUCT");
 		logger.info("System has " + products.size() + " products");
 
+		// reo - Optionally populate db
+		boolean populateDBWithNewEntries = false;
+		if (populateDBWithNewEntries)
+			populateDBWithRandomEntries(jdbcTemplate, products);
+
+		return dataSource;
+	}
+
+	private void populateDBWithRandomEntries(JdbcTemplate jdbcTemplate, List<Map<String, Object>> products) {
 		// Populate with random prices
 		Random rand = new Random();
 
 		for (Map<String, Object> item : products) {
 			String number = (String) item.get("number");
 			String manufacturer = (String) item.get("manufacturer");
+			String name = (String) item.get("name");
 			BigDecimal price = new BigDecimal(rand.nextInt(10000000) / 100.0).setScale(2, BigDecimal.ROUND_HALF_UP);
-			jdbcTemplate.update("UPDATE T_PRODUCT SET price = ?, manufacturer = ? WHERE number = ?", price, manufacturer, number);
+			jdbcTemplate.update("UPDATE T_PRODUCT SET price = ?, name = ?, manufacturer = ? WHERE number = ?", price, name, manufacturer, number);
 		}
-
-		return dataSource;
 	}
 }

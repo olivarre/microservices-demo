@@ -1,0 +1,96 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="header :: copy"></head>
+
+<body>
+	<h1>Product Search</h1>
+
+	<p>Search by product number, product name, or product description keywords:</p>
+	<br/>
+
+	<form action="#" th:object="${searchCriteria}" method="GET"
+		th:action="@{/products/dosearch}" class="form-horizontal">
+
+<!-- Product Number field -->
+		<div class="form-group">
+			<label for="number" class="control-label col-xs-2">Product
+				Number</label>
+			<div class="col-xs-2">
+				<input type="text" class="form-control" id="number"
+					th:field="*{productNumber}" placeholder="Enter product number"
+					style="width: 10em;" />
+			</div>
+			<div class="col-xs-8">Enter a valid 9 digit number</div>
+		</div>
+
+		<!-- Product Number errors (if any) -->
+		<div class="form-group">
+			<div class="control-label col-xs-2">&nbsp;</div>
+			<div class="col-xs-2">&nbsp;</div>
+			<div class="col-xs-8">
+				<span th:if="${#fields.hasErrors('productNumber')}"
+					style="color: red; font-size: smaller" th:errors="*{productNumber}">Incorrect data</span>
+			</div>
+		</div>
+
+<!-- Product name field -->
+		<div class="form-group">
+			<label for="search" class="control-label col-xs-2">Name
+				Search</label>
+			<div class="col-xs-2">
+				<input type="text" class="form-control" id="search"
+					th:field="*{searchText}" placeholder="Text from product name"
+					style="width: 10em;" />
+			</div>
+			<div class="col-xs-8">Case-insensitive, supports partial name matching</div>
+		</div>
+
+		<!-- Product name errors (if any) -->
+		<div class="form-group">
+			<div class="control-label col-xs-2">&nbsp;</div>
+			<div class="col-xs-2">&nbsp;</div>
+			<div class="col-xs-8">
+				<span th:if="${#fields.hasErrors('searchText')}"
+					style="color: red; font-size: smaller" th:errors="*{searchText}"></span>
+			</div>
+		</div>
+
+<!-- Product keyword search field -->
+		<div class="form-group">
+			<label for="search" class="control-label col-xs-2">Keyword Search</label>
+			<div class="col-xs-2">
+				<input type="text" class="form-control" id="search"
+					th:field="*{searchText}" placeholder="Text anywhere in product description"
+					style="width: 10em;" />
+			</div>
+			<div class="col-xs-8">Case-insensitive, supports partial keyword matching (IN PROGRESS)</div>
+		</div>
+
+		<!-- Product name errors (if any) -->
+		<div class="form-group">
+			<div class="control-label col-xs-2">&nbsp;</div>
+			<div class="col-xs-2">&nbsp;</div>
+			<div class="col-xs-8">
+				<span th:if="${#fields.hasErrors('searchText')}"
+					style="color: red; font-size: smaller" th:errors="*{searchText}"></span>
+			</div>
+		</div>
+
+<!--  Submit button -->
+		<div class="form-group">
+			<div class="col-xs-offset-2 col-xs-10">
+				<button type="submit" class="btn btn-primary">Find</button>
+			</div>
+		</div>
+	</form>
+
+	<div th:replace="footer :: copy"></div>
+
+	<div style="text-align: center">
+		This page implemented by Roberto
+	</div>
+
+</body>
+</html>

@@ -11,10 +11,13 @@
 	<dl class="dl-horizontal">
 		<dt>Number</dt>
 		<dd th:text="${product.number}">number</dd>
-		<dt>Owner</dt>
+		<dt>Name</dt>
+		<dd th:text="${product.name}">name</dd>
+		<dt>Manufacturer</dt>
 		<dd th:text="${product.manufacturer}">manufacturer</dd>
-		<dt>Balance</dt>
-		<dd th:text="${product.balance}">balance</dd>
+		<!-- reo - fixed product price display -->
+		<dt>Price</dt>
+		<dd>$<span th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 2, 'POINT')}">10.00</span></dd>		
 	</dl>
 
 	<div style="height: 2cm">&nbsp;</div>
@@ -24,5 +27,9 @@
 	</div>
 
 	<div th:replace="footer :: copy"></div>
+	
+	<div style="text-align: center">
+		This page implemented by Roberto
+	</div>	
 </body>
 </html>
