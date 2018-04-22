@@ -1,6 +1,35 @@
-# microservices-demo
+# Roberto's microservices-demo-modified
 
-Demo application to go with my [Microservices Blog] (https://spring.io/blog/2015/07/14/microservices-with-spring) on the spring.io website.
+This microservices demo has been forked and extended by Roberto Olivares to add new functionality.
+
+The base code came from Spring's microservice demo posted to GitHub by Paul Chapman. (see microservices-demo section and below)
+
+To run the microservices:
+1. Clone the repository down to your machine. 
+1. In Spring Tool Suite (STS) Eclipse > Import Project > Maven Project > From directory > point it to the .POM file in in the cloned repository to create a project
+1. In Spring Tool Suite (STS) Eclipse > Debug As > Spring Boot Application > Main class = XXXServer to create an execution profile
+1. You must run the AccountServer and ProductServer first, then the RegistrationServer, then the WebServer 
+1. Once the services are running, check out [http://localhost:3333](http://localhost:3333) for an index page with further instructions.
+
+# Roberto's "Products" REST Microservice Addition
+Roberto added a fourth backing "Products" REST microservice (ProductsService.java) on port 4444 in its entirety (controller, data model) and its JPA/Hibernate data store.
+
+1. Products by number (REST API) : [http://localhost:4444/products/123456020](http://localhost:4444/products/123456020)
+1. Products by name (REST API) : [http://localhost:4444/products/byname/microserv](http://localhost:4444/products/byname/microserv)
+1. Products search (REST API) :	[http://localhost:4444/products/search](http://localhost:4444/products/search)
+
+# Roberto's Front-End Additions
+Roberto added various Product-based functionalities to the front end microservice on port 3333.
+
+1. Products by number (REST passthrough) : [http://localhost:3333/products/123456020](http://localhost:3333/products/123456020)
+1. Products by name (REST passthrough) : [http://localhost:3333/products/byname/microserv](http://localhost:3333/products/byname/microserv)
+1. Products search (form to REST passthrough) : [http://localhost:3333/products/search](http://localhost:3333/products/search)
+
+The web microservice's pages delegate REST queries to the Products microservice and wrap the results in a Spring ThymeLeaf based result HTML.
+
+# microservices-demo
+ 
+Demo application to go with Paul Chapman's [Microservices Blog](https://spring.io/blog/2015/07/14/microservices-with-spring) on the spring.io website.
 
 ![Demo System Schematic](https://github.com/paulc4/microservices-demo/blob/master/mini-system.jpg)
 
@@ -34,7 +63,7 @@ For convenience we are building a 'fat' executble jar whose start-class (main me
 java -jar target/microservices-demo-1.2.0.RELEASE.jar registration|accounts|web
 ```
 
-### Priocedure
+### Procedure
 
 To run the microservices system from the command-line, open three CMD windows (Windows) or three Terminal windows (MacOS, Linux) and arrange so you can view them conveniently.
 
