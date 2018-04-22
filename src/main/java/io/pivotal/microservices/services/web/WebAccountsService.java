@@ -52,8 +52,8 @@ public class WebAccountsService {
 	public Account findByNumber(String accountNumber) {
 
 		logger.info("findByNumber() invoked: for " + accountNumber);
-		return restTemplate.getForObject(serviceUrl + "/accounts/{number}",
-				Account.class, accountNumber);
+		return restTemplate
+				.getForObject(serviceUrl + "/accounts/{number}", Account.class, accountNumber);
 	}
 
 	public List<Account> byOwnerContains(String name) {
@@ -74,8 +74,8 @@ public class WebAccountsService {
 	}
 
 	public Account getByNumber(String accountNumber) {
-		Account account = restTemplate.getForObject(serviceUrl
-				+ "/accounts/{number}", Account.class, accountNumber);
+		Account account = restTemplate
+				.getForObject(serviceUrl + "/accounts/{number}", Account.class, accountNumber);
 
 		if (account == null)
 			throw new AccountNotFoundException(accountNumber);

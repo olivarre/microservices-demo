@@ -6,25 +6,61 @@
 
 <body>
 
-	<h1>Microservices Demo - Web Server</h1>
-	<h3>Overview</h3>
+	<h1>Microservices Demo - Web Server - Front End</h1>
+	<h3>Credits</h3>
 	<ul>
-		<li>Demo defines a simple web-application for accessing accounts
-			data.</li>
-		<li>All the account information is fetched via a RESTful
-			interface to a Accounts microservice.</li>
+		<li>This microservices demo has been forked and extended by Roberto Olivares</li>
+		<li>The base code came from Spring's microservice demo posted to GitHub by Paul Chapman</li>
+		<li><a href="https://spring.io/blog/2015/07/14/microservices-with-spring">Original Spring Microservices Blog Post</a></li>
+		<li><a href="https://github.com/paulc4/microservices-demo">Original Spring microservice demo repository on Github</a></li>
 	</ul>
 
-	<h3>The Demo</h3>
+	<h3>Overview</h3>
+	<ul>
+		<li>This demo originally defined a simple web-application for accessing accounts data.</li>
+		<li>All the account information is fetched via a RESTful interface to a Accounts microservice.</li>
+		<li>The original microservices code contained only three Spring Boot microservices:</li>
+		<ul>
+			<li>A Web Front-End service (WebServer.java)</li>
+			<li>An "Accounts" REST microservice (AccountsServer.java)</li>
+			<li>A Eureka-based registration microservice (RegistrationServer.java)</li>
+		</ul>
+	</ul>
+	
+	<h3>Roberto's "Products" REST Microservice Addition</h3>
+	<ul>
+		<li>Roberto added a fourth backing "Products" REST microservice (ProductsService.java) on port 4444 in its entirety (controller, data model) and its JPA/Hibernate data store.</li>
+		<ul>
+			<li>Products by number (REST API) : 	<a href="http://localhost:4444/products/123456020">http://localhost:4444/products/123456020</a></li>
+			<li>Products by name (REST API) :		<a href="http://localhost:4444/products/byname/microserv">http://localhost:4444/products/byname/microserv</a></li>
+			<li>Products search (REST API) :		<a href="http://localhost:4444/products/search">http://localhost:4444/products/search</a></li>
+		</ul>		
+	</ul>		
+	
+	<h3>Roberto's Front-End Additions</h3>
+	<ul>
+		<li>Roberto added various Product-based functionalities to the front end microservice on port 3333.</li>
+		<ul>
+			<li>Products by number (REST passthrough) : 		<a href="http://localhost:3333/products/123456020">http://localhost:3333/products/123456020</a></li>
+			<li>Products by name (REST passthrough) : 			<a href="http://localhost:3333/products/byname/microserv">http://localhost:3333/products/byname/microserv</a></li>
+			<li>Products search (form to REST passthrough) : 	<a href="http://localhost:3333/products/search">http://localhost:3333/products/search</a></li>
+		</ul>	
+		<li>The web microservice's pages delegate REST queries to the Products microservice and wrap the results in a Spring ThymeLeaf based result HTML.</li>
+	</ul>
 
+	<h3>Roberto's To-Do List</h3>
+	<ul>
+		<li>Add JPA-based comprehensive search through "product data" functionality (search by keyword). <br/>(See ProductRepository.java and ProductsController.java)</li>
+		<li>Add cart microservice.</li>
+		<li>Fix authentication.</li>
+	</ul>
+
+	<h3>The Original Demo (REST APIs and Web Front End)</h3>
 	<ul class="openlist">
-		<li>Eureka Dashboard: <a
-			href="http://localhost:1111">http://localhost:1111</a></li>
-		<li>Check applications registered: <a
-			href="http://localhost:1111/eureka/apps/">http://localhost:1111/eureka/apps/</a></li>
-		<li>Fetch account #123456789: <a th:href="@{/accounts/123456789}">/accounts/123456789</a></li>
-
-		<li>Fetch by name: <a th:href="@{/accounts/owner/Keri}">/accounts/owner/Keri</a></li>
+		<li>Eureka Dashboard: 				<a href="http://localhost:1111">http://localhost:1111</a></li>
+		<li>Check applications registered: 	<a href="http://localhost:1111/eureka/apps/">http://localhost:1111/eureka/apps/</a></li>
+		<li>Fetch account #123456789: 		<a th:href="@{/accounts/123456789}">/accounts/123456789</a></li>
+		<li>Fetch by name: 					<a th:href="@{/accounts/owner/Keri}">/accounts/owner/Keri</a></li>
 
 		<li>Account <a th:href="@{/accounts/search}">Search</a></li>
 	</ul>

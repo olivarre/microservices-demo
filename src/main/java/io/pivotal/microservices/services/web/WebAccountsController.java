@@ -71,12 +71,12 @@ public class WebAccountsController {
 
 	@RequestMapping(value = "/accounts/search", method = RequestMethod.GET)
 	public String searchForm(Model model) {
-		model.addAttribute("searchCriteria", new SearchCriteria());
+		model.addAttribute("searchCriteria", new AccountSearchCriteria());
 		return "accountSearch";
 	}
 
 	@RequestMapping(value = "/accounts/dosearch")
-	public String doSearch(Model model, SearchCriteria criteria,
+	public String doSearch(Model model, AccountSearchCriteria criteria,
 			BindingResult result) {
 		logger.info("web-service search() invoked: " + criteria);
 
