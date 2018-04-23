@@ -35,7 +35,7 @@ These basically add offers to an existing product ID and allow retrieval of the 
 
 * @RequestMapping(value = "/products/{productIdString}/offers/add", params = { "offerIdString", "priceString" }) 
 
-```
+```java
 	/** REST API for addProductOffer functionality.
 	 * 
 	 * @param productIdString	A valid product ID string
@@ -50,7 +50,7 @@ These basically add offers to an existing product ID and allow retrieval of the 
 
 * @RequestMapping("/products/{productIdString}/offers/nextCheapestByPrice/{priceString}")
 
-```
+```java
 	/** REST API for nextCheapestOfferByPrice functionality.
 	 * 
 	 * @param productIdString	A valid product ID string
@@ -64,7 +64,7 @@ These basically add offers to an existing product ID and allow retrieval of the 
 
 Note that the following products are pre-defined in the server's SQL database.
  
-```
+```sql
 insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456020', 	'Marketing Microservices', 			'YourCompany.com', 			'450000.00');
 insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456021', 	'Machine Learning Microservices', 	'YourCompany.com', 			'999000.00');
 insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456022', 	'Educational Microservices', 		'usa.gov', 					'9.99');
@@ -78,7 +78,7 @@ The ProductOffers API can be tested by starting the Products microservice (port 
 * First, add a $100 offer #1 for product #123456020
 * [http://localhost:4444/products/123456020/offers/add?offerIdString=1&priceString=100.00](http://localhost:4444/products/123456020/offers/add?offerIdString=1&priceString=100.00)
 
-```
+```json
 {
 	"OfferId" : "100.00", 
 	"Price" : "1", 
@@ -91,7 +91,7 @@ The ProductOffers API can be tested by starting the Products microservice (port 
 * This should return null as there is no offer cheaper than $50
 * [http://localhost:4444/products/123456020/offers/nextCheapestByPrice/50.00](http://localhost:4444/products/123456020/offers/nextCheapestByPrice/50.00)
 
-```
+```json
 {
 	"NextCheapestOfferID" : "null", 
 	"TargetPrice" : "50", 
@@ -104,7 +104,7 @@ The ProductOffers API can be tested by starting the Products microservice (port 
 * This should return offer #1 which we added at price $100 in the first request. 
 * [http://localhost:4444/products/123456020/offers/nextCheapestByPrice/150.00](http://localhost:4444/products/123456020/offers/nextCheapestByPrice/150.00)
 
-```
+```json
 { 
 	"NextCheapestOfferID" : "1", 
 	"TargetPrice" : "150", 
