@@ -1,7 +1,7 @@
 # Roberto's ProductOffers - Rough Draft Implementation
 
 ```java
-public class InvalidProductIdException extends Exception {
+	public class InvalidProductIdException extends Exception {
 	}
 	
 	public class PRICE extends BigDecimal {
@@ -22,10 +22,10 @@ public class InvalidProductIdException extends Exception {
 		}
 	}	
 	
-	public class Product2 {
+	public class Product {
 		TreeMap<PRICE, OFFERID>	priceToOffersMap;	// Ordered list of OFFERIDs for this product, sorted by PRICE
 	
-		public Product2 () {
+		public Product () {
 			priceToOffersMap = new TreeMap<>();
 		}
 	
@@ -46,36 +46,36 @@ public class InvalidProductIdException extends Exception {
 
 	public class OfferManager {
 	
-		HashMap<PRODUCTID, Product2> prodIdToProductsMap;
+		HashMap<PRODUCTID, Product> prodIdToProductsMap;
 	
 		public OfferManager() {
 			prodIdToProductsMap = new HashMap<>();
 		}
 		
-		public void addProduct(PRODUCTID productId, Product2 product) {
+		public void addProduct(PRODUCTID productId, Product product) {
 			prodIdToProductsMap.put(productId, product);
 		}
 		
 		//
-		public Product2 getProductById(PRODUCTID product_id) {
+		public Product getProductById(PRODUCTID product_id) {
 			return prodIdToProductsMap.get(product_id);
 		}
 		
 		// Adds offer_id, with the specified price, for product_id. 
 		public void addOffer(OFFERID offer_id, PRODUCTID product_id, PRICE price) throws InvalidProductIdException {
-			Product2 product = getProductById(product_id);	
+			Product product = getProductById(product_id);	
 			if (product != null)
 			product.addOfferIdByPrice(offer_id, price);
 			else
 				throw new InvalidProductIdException();
 		}
 		
-			// QueryClosestOffer returns the id of a offer corresponding to the specified product, which has its prices closest to the query parameter. 
+		// QueryClosestOffer returns the id of a offer corresponding to the specified product, which has its prices closest to the query parameter. 
 		// product_id		The product id. Throws InvalidProductIdException if not valid.
 		// price		The price to return the immediately lower offer for. Returns null if no offer exists that's lower.
 		// Returns: 		The offer that's immediately lower in price, or null if no offer lower found.
 		OFFERID queryClosestOffer(PRODUCTID product_id, PRICE price) throws InvalidProductIdException {
-			Product2 product = getProductById(product_id);
+			Product product = getProductById(product_id);
 			if (product == null)
 				throw new InvalidProductIdException();
 			OFFERID offerId = product.getClosestOfferIdToPrice(price);
