@@ -12,20 +12,106 @@ To run the microservices:
 1. Once the services are running, check out [http://localhost:3333](http://localhost:3333) for an index page with further instructions.
 
 # Roberto's "Products" REST Microservice Addition
-Roberto added a fourth backing "Products" REST microservice (ProductsService.java) on port 4444 in its entirety (controller, data model) and its JPA/Hibernate data store.
+Added a fourth backing "Products" REST microservice (ProductsService.java) on port 4444 in its entirety (controller, data model) and its JPA/Hibernate data store.
 
 1. Products by number (REST API) : [http://localhost:4444/products/123456020](http://localhost:4444/products/123456020)
 1. Products by name (REST API) : [http://localhost:4444/products/byname/microserv](http://localhost:4444/products/byname/microserv)
 1. Products search (REST API) :	[http://localhost:4444/products/search](http://localhost:4444/products/search)
 
 # Roberto's Front-End Additions
-Roberto added various Product-based functionalities to the front end microservice on port 3333.
+Added various Product-based functionalities to the front end microservice on port 3333.
 
 1. Products by number (REST passthrough) : [http://localhost:3333/products/123456020](http://localhost:3333/products/123456020)
 1. Products by name (REST passthrough) : [http://localhost:3333/products/byname/microserv](http://localhost:3333/products/byname/microserv)
 1. Products search (form to REST passthrough) : [http://localhost:3333/products/search](http://localhost:3333/products/search)
 
 The web microservice's pages delegate REST queries to the Products microservice and wrap the results in a Spring ThymeLeaf based result HTML.
+
+# Roberto's "ProductOffers" REST API on the Products Microservice
+
+Added two APIs to the backing "Products" REST microservice (ProductsService.java) on port 4444.
+
+These basically add offers to an existing product ID and allow retrieval of the next cheapest offerId given a target offer price.
+
+* @RequestMapping(value = "/products/{productIdString}/offers/add", params = { "offerIdString", "priceString" }) 
+
+```
+	/** REST API for addProductOffer functionality.
+	 * 
+	 * @param productIdString	A valid product ID string
+	 * @param offerIdString		An offer ID string
+	 * @param priceString			The price to try to find the next cheapest offer for.
+	 * 
+	 * @return JSON response with transaction info.
+	 * @throws InvalidProductIdException
+	 * @author Roberto Olivares (reo)
+	 */
+```
+
+* @RequestMapping("/products/{productIdString}/offers/nextCheapestByPrice/{priceString}")
+
+```
+	/** REST API for nextCheapestOfferByPrice functionality.
+	 * 
+	 * @param productIdString	A valid product ID string
+	 * @param priceString			The price to try to find the next cheapest offer for.
+	 * 
+	 * @return JSON response including the next cheapest offer's ID (or null if none).
+	 * @throws InvalidProductIdException
+	 * @author Roberto Olivares (reo)
+	 */
+```
+
+Note that the following products are pre-defined in the server's SQL database.
+ 
+```
+insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456020', 	'Marketing Microservices', 			'YourCompany.com', 			'450000.00');
+insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456021', 	'Machine Learning Microservices', 	'YourCompany.com', 			'999000.00');
+insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456022', 	'Educational Microservices', 		'usa.gov', 					'9.99');
+insert into T_PRODUCT (NUMBER, NAME, MANUFACTURER, PRICE) values ('123456023', 	'Social Microservices', 			'usa.gov', 					'0.10');
+```
+
+# Testing the "ProductOffers" REST API on the Products Microservice
+
+The ProductOffers API can be tested by starting the Products microservice (port 4444) and then executing the following REST requests.
+
+* First, add a $100 offer #1 for product #123456020
+* [http://localhost:4444/products/123456020/offers/add?offerIdString=1&priceString=100.00](http://localhost:4444/products/123456020/offers/add?offerIdString=1&priceString=100.00)
+
+```
+{
+	"OfferId" : "100.00", 
+	"Price" : "1", 
+	"ProductId" : "123456020",
+	"Product" : "123456020 [YourCompany.com] [Marketing Microservices]: $450000.00" 
+}
+```
+
+* Second, request the next cheapest offerID for price $50 for product #123456020
+* This should return null as there is no offer cheaper than $50
+* [http://localhost:4444/products/123456020/offers/nextCheapestByPrice/50.00](http://localhost:4444/products/123456020/offers/nextCheapestByPrice/50.00)
+
+```
+{
+	"NextCheapestOfferID" : "null", 
+	"TargetPrice" : "50", 
+	"ProductID" : "123456020",
+	"Product" : "123456020 [YourCompany.com] [Marketing Microservices]: $450000.00"
+}
+```
+
+* Third, request the next cheapest offerID for price $150 for product #123456020
+* This should return offer #1 which we added at price $100 in the first request. 
+* [http://localhost:4444/products/123456020/offers/nextCheapestByPrice/150.00](http://localhost:4444/products/123456020/offers/nextCheapestByPrice/150.00)
+
+```
+{ 
+	"NextCheapestOfferID" : "1", 
+	"TargetPrice" : "150", 
+	"ProductID" : "123456020", 
+	"Product" : "123456020 [YourCompany.com] [Marketing Microservices]: $450000.00" 
+}
+```
 
 # microservices-demo
  
