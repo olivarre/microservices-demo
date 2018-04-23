@@ -1,12 +1,24 @@
 package io.pivotal.microservices.products;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservicedemo.commerce.abstractions.ids.OFFERID;
+import com.microservicedemo.commerce.abstractions.ids.PRICE;
+import com.microservicedemo.commerce.abstractions.ids.PRODUCTID;
+import com.microservicedemo.commerce.exceptions.InvalidProductIdException;
+import com.microservicedemo.commerce.products.offers.ProductOfferManager;
+import com.microservicedemo.commerce.products.offers.ProductOffers;
 
 import io.pivotal.microservices.exceptions.ProductNotFoundException;
 
@@ -26,6 +38,9 @@ public class ProductsController {
 	protected Logger logger = Logger.getLogger(ProductsController.class.getName());
 	protected ProductRepository productRepository;
 
+	protected ProductOfferManager offerManager = new ProductOfferManager();
+
+	
 	/**
 	 * Create an instance plugging in the repository of Products.
 	 * 
@@ -114,4 +129,117 @@ public class ProductsController {
 			return products;
 		}
 	}	
+	
+	/** REST API for addProductOffer functionality.
+	 * 
+	 * @see http://www.baeldung.com/spring-requestmapping
+	 * 
+	 * @param productIdString	A valid product ID string
+	 * @param offerIdString		An offer ID string
+	 * @param priceString		The price to try to find the next cheapest offer for.
+	 * 
+	 * @return JSON response with transaction info.
+	 * @throws InvalidProductIdException
+	 * @author Roberto Olivares (reo)
+	 */
+	@RequestMapping(
+			  value = "/products/{productIdString}/offers/add", 
+			  params = { "offerIdString", "priceString" }
+			  ) 
+	//@ResponseBody	
+	public String addProductOffer(
+			@PathVariable("productIdString") String productIdString,
+			@RequestParam("offerIdString") String offerIdString,
+			@RequestParam("priceString") String priceString
+	) throws InvalidProductIdException {
+		/*
+		logger.info("products-service bySearchText() invoked: "
+				+ productRepository.getClass().getName() + " for "
+				+ searchText);
+		 */
+		
+		// Attempt to locate the product
+		Product product = productRepository.findByNumber(productIdString);
+		if (product == null)
+			return "ProductID not found: " + productIdString;
+		
+		// Generate the required synonyms 
+		PRICE price = new PRICE(priceString);
+		PRODUCTID productId = new PRODUCTID(productIdString);
+		OFFERID offerId = new OFFERID(offerIdString);
+
+		// If a product exists, but not a productoffers list for it, create it now
+		ProductOffers productOffers = offerManager.getProductOffersById(productId);
+		if (productOffers == null) 
+			offerManager.addProduct(productId, new ProductOffers());
+		
+		// Add offer to this product id in the offermanager 
+		offerManager.addOffer(offerId, productId, price);
+
+		// Return a description of the transaction
+		LinkedHashMap<String, String> result = new LinkedHashMap<>();
+		result.put("OfferId", 	"" + priceString);
+		result.put("Price", 	"" + offerId);
+		result.put("ProductId", "" + productIdString);
+		result.put("Product", 	"" + product);
+		
+		// Convert response to JSON
+		String jsonResult = toJson(result);
+		return jsonResult;		
+	}
+
+	/** REST API for nextCheapestOfferByPrice functionality.
+	 * 
+	 * @param productIdString	A valid product ID string
+	 * @param priceString		The price to try to find the next cheapest offer for.
+	 * 
+	 * @return JSON response including the next cheapest offer's ID (or null if none).
+	 * @throws InvalidProductIdException
+	 * @author Roberto Olivares (reo)
+	 */
+	@RequestMapping("/products/{productIdString}/offers/nextCheapestByPrice/{priceString}")
+	public String nextCheapestOfferByPrice(
+			@PathVariable("productIdString") String productIdString,
+			@PathVariable("priceString") String priceString
+	) throws InvalidProductIdException {
+		/*
+		logger.info("products-service bySearchText() invoked: "
+				+ productRepository.getClass().getName() + " for "
+				+ searchText);
+		 */
+		
+		// Attempt to locate the product
+		Product product = productRepository.findByNumber(productIdString);
+		if (product == null)
+			return "ProductID not found: " + productIdString;
+		
+		// Generate the required key synonyms
+		PRICE price = new PRICE(priceString);
+		PRODUCTID productId = new PRODUCTID(productIdString);
+		
+		// Add offer to this product id in the offermanager 
+		OFFERID offerId = offerManager.queryClosestOfferIdByPrice(productId, price);
+
+		// Return a description of the transaction
+		LinkedHashMap<String, String> result = new LinkedHashMap<>();
+		result.put("NextCheapestOfferID", 	"" + offerId);
+		result.put("TargetPrice", 			"" + priceString);
+		result.put("ProductID", 			"" + productIdString);
+		result.put("Product", 				"" + product);
+		
+		// Convert response to JSON
+		String jsonResult = toJson(result);
+		return jsonResult;
+	}
+	
+	private String toJson(HashMap<String, String>map) {
+		String jsonResult = "";
+		try {
+			jsonResult = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(map);
+			
+		} catch (JsonProcessingException e) {
+			jsonResult = e.getMessage();
+		}
+		return jsonResult;
+	}
 }

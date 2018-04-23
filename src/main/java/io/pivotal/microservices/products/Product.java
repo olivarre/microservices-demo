@@ -2,11 +2,16 @@ package io.pivotal.microservices.products;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.microservicedemo.commerce.abstractions.ids.OFFERID;
+import com.microservicedemo.commerce.abstractions.ids.PRICE;
 
 /**
  * reo - Persistent Product entity with JPA markup. 
@@ -30,7 +35,7 @@ public class Product implements Serializable {
 	protected String name;
 
 	@Column(name = "manufacturer")
-	protected String manufacturer;	// reo
+	protected String manufacturer; 
 
 	@Column(name = "price")
 	protected BigDecimal price;
@@ -118,4 +123,5 @@ public class Product implements Serializable {
 		return number + " [" + manufacturer + "] [" + name + "]: $" + price; // reo
 	}
 
+	
 }
